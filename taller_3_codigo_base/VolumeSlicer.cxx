@@ -19,6 +19,33 @@
 #include <vtkVolume.h>
 #include <vtkVolumeProperty.h>
 
+#include <vtkActor.h>
+#include <vtkAxesActor.h>
+#include <vtkClipVolume.h>
+#include <vtkCommand.h>
+#include <vtkOrientationMarkerWidget.h>
+#include <vtkOutlineFilter.h>
+#include <vtkPlane.h>
+#include <vtkPlaneWidget.h>
+#include <vtkPolyDataMapper.h>
+#include <vtkProjectedTetrahedraMapper.h>
+#include <vtkProperty.h>
+#include <vtkSmartPointer.h>
+
+
+void AddOutline( vtkAlgorithmOutput* port, vtkRenderer* ren )
+{
+  vtkNew< vtkOutlineFilter > outline;
+  vtkNew< vtkPolyDataMapper > mapper;
+  vtkNew< vtkActor > actor;
+  outline->SetInputConnection( port );
+  mapper->SetInputConnection( outline->GetOutputPort( ) );
+  actor->SetMapper( mapper );
+  actor->GetProperty( )->SetColor( 0, 0, 0 );
+  ren->AddActor( actor );
+}
+
+
 int main( int argc, char** argv )
 {
   if( argc < 3 )
